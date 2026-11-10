@@ -25,7 +25,7 @@ VISTE_AUTOMATICHE = [(6, "giorno"), (12, "settimana"), (18, "mese")]
 
 # Raccolta differenziata: cosa passa a ritirare ogni giorno (0 = lunedì ... 6 = domenica).
 # Esempio: {0: "Umido", 2: "Plastica", 4: "Carta e umido"}. Lascia {} per non mostrarla.
-RACCOLTA = {}
+RACCOLTA = {2: "Umido & secco", 3: "Plastica & Carta", 5: "Umido & Vetro"}
 
 # Avvisi meteo calcolati dalle previsioni (non sono allerte ufficiali della Protezione Civile)
 SOGLIA_RAFFICHE_KMH = 60
