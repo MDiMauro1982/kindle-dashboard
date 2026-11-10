@@ -1,0 +1,40 @@
+name: Dashboard Kindle
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # ogni 30 minuti
+  workflow_dispatch:          # permette di avviarlo a mano
+
+permissions:
+  contents: write
+
+jobs:
+  genera:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Font
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-dejavu-core
+
+      - name: Librerie
+        run: pip install -r requirements.txt
+
+      - name: Genera immagine
+        env:
+          ICS_URL: ${{ secrets.ICS_URL }}
+        run: python dashboard.py
+
+      - name: Pubblica immagine
+        run: |
+          mkdir out && cp dash.png out/ && cd out
+          git init -q -b immagine
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add dash.png
+          git commit -q -m "Aggiornamento dashboard"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" immagine
