@@ -27,14 +27,15 @@ jobs:
       - name: Genera immagine
         env:
           ICS_URL: ${{ secrets.ICS_URL }}
+          VISTA: ${{ vars.VISTA }}
         run: python dashboard.py
 
       - name: Pubblica immagine
         run: |
-          mkdir out && cp dash.png out/ && cd out
+          mkdir out && cp dash*.png out/ && cd out
           git init -q -b immagine
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add dash.png
+          git add *.png
           git commit -q -m "Aggiornamento dashboard"
           git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" immagine
